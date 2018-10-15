@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import docx from './SampleSpec.docx';
-import FileViewer from 'react-file-viewer';
 
 class DocxViewer extends Component {
 
@@ -9,9 +8,6 @@ class DocxViewer extends Component {
     return (
       <div>
         <div className="padd">
-          <FileViewer
-            fileType={'docx'}
-            filePath={docx} />
         </div>
       </div>
     );

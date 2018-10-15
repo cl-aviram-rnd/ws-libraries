@@ -5,7 +5,7 @@ import InnerTabs from './InnerTabs';
 
 const components = ['Button', 'Card', 'Input', 'Label', 'List', 'Reveal', 'Step', 'Menu',
   'Table', 'Feed', 'Comment', 'Dropdown', 'Modal', 'Progress', 'Sidebar', 'Pagination',
-  'Toggle', 'Sankey', 'FaceDetection', 'LiveStream', 'PdfViewer', 'DocxViewer']
+  'Toggle', 'Sankey', 'FaceDetection', 'LiveStream', 'PdfViewer', 'DocxViewer', 'AudioPlayer', 'VideoPlayer']
 
 const panes = components.map((component) => {
   return {

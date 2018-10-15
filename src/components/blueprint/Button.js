@@ -16,7 +16,7 @@ export default class ButtonsExample extends React.Component {
   };
 
   handleActiveChange = (active) => {
-    this.setState({ active: this.state.active })
+    this.setState({ active: !this.state.active })
   };
   handleDisabledChange = ((disabled) => this.setState({ disabled: !this.state.disabled }));
   handleIconOnlyChange = (iconOnly => this.setState({ iconOnly: !this.state.iconOnly }));

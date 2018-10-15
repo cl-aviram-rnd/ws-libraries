@@ -8,6 +8,7 @@ import Sankey from './nivo/Snakey';
 import LiveStream from './file-reader/LiveStream';
 import PdfViewer from './file-reader/PdfViewer';
 import DocxViewer from './file-reader/DocxViewer';
+import AudioPlayer from './file-reader/AudioPlayer';
 
 const TabPane = Tabs.TabPane;
 
@@ -23,10 +24,10 @@ const InnerTabs = ({ component }) => {
     )
   }
 
-  if (component === 'LiveStream') {
+  if (component === 'LiveStream' || component === 'VideoPlayer') {
     return (
       <Tabs type="card">
-        <TabPane tab="Live Stream" key="1"><LiveStream /></TabPane>
+        <TabPane tab="Live Stream" key="1"><LiveStream isLive={component === 'LiveStream'} /></TabPane>
       </Tabs>
     )
   }
@@ -43,6 +44,14 @@ const InnerTabs = ({ component }) => {
     return (
       <Tabs type="card">
         <TabPane tab="Docx Viewer" key="1"><DocxViewer /></TabPane>
+      </Tabs>
+    )
+  }
+
+  if (component === 'AudioPlayer') {
+    return (
+      <Tabs type="card">
+        <TabPane tab="Audio Player" key="1"><AudioPlayer /></TabPane>
       </Tabs>
     )
   }
