@@ -1,4 +1,5 @@
 import React from 'react';
+import { Dialog, Button, InputGroup } from "@blueprintjs/core";
 
 import { Sankey } from 'react-vis';
 
@@ -14,109 +15,138 @@ const getRandomColor = () => {
   return color;
 };
 
-const nodes = [{name: 'a'}, {name: 'b'}, {name: 'c'}];
-const links = [
-  {source: 0, target: 1, value: 10, color: getRandomColor()},
-  {source: 0, target: 2, value: 20, color: getRandomColor()},
-  {source: 1, target: 2, value: 20, color: getRandomColor()},
-  {source: 1, target: 2, value: 15, color: getRandomColor()},
-  {source: 2, target: 5, value: 30, color: getRandomColor()},
-  {source: 2, target: 4, value: 10, color: getRandomColor()},
-  {source: 3, target: 5, value: 25, color: getRandomColor()},
-  {source: 4, target: 5, value: 30, color: getRandomColor()},
-  {source: 4, target: 7, value: 20, color: getRandomColor()},
-  {source: 5, target: 7, value: 10, color: getRandomColor()},
-  {source: 3, target: 8, value: 10, color: getRandomColor()},
-  {source: 1, target: 9, value: 25, color: getRandomColor()},
-  {source: 4, target: 9, value: 5, color: getRandomColor()},
-  {source: 2, target: 7, value: 15, color: getRandomColor()},
-  {source: 1, target: 6, value: 10, color: getRandomColor()},
-  {source: 3, target: 6, value: 20, color: getRandomColor()},
-  {source: 6, target: 10, value: 20, color: getRandomColor()},
-  {source: 3, target: 10, value: 10, color: getRandomColor()},
-  {source: 4, target: 10, value: 30}
-];
-
-const newNodes = [
-  {
-    "name": "John",
-    "color": "hsl(94, 70%, 50%)"
-  },
-  {
-    "name": "Raoul",
-    "color": "hsl(85, 70%, 50%)"
-  },
-  {
-    "name": "Jane",
-    "color": "hsl(35, 70%, 50%)"
-  },
-  {
-    "name": "Marcel",
-    "color": "hsl(146, 70%, 50%)"
-  },
-  {
-    "name": "Ibrahim",
-    "color": "hsl(19, 70%, 50%)"
-  },
-  {
-    "name": "Junko",
-    "color": "hsl(40, 70%, 50%)"
-  },
-  {
-    "name": "Lyu",
-    "color": "hsl(307, 70%, 50%)"
-  },
-  {
-    "name": "André",
-    "color": "hsl(10, 70%, 50%)"
-  },
-  {
-    "name": "Maki",
-    "color": "hsl(204, 70%, 50%)"
-  },
-  {
-    "name": "Véronique",
-    "color": "hsl(8, 70%, 50%)"
-  },
-  {
-    "name": "Thibeau",
-    "color": "hsl(36, 70%, 50%)"
-  },
-  {
-    "name": "Josiane",
-    "color": "hsl(106, 70%, 50%)"
-  },
-  {
-    "name": "Raphaël",
-    "color": "hsl(154, 70%, 50%)"
-  }
-]
+const getRandomNumber = (max) => {
+  return Math.floor(Math.random() * Math.floor(max));
+};
 
 export default class LinkEventSankeyExample extends React.Component {
   state = {
-    activeLink: null
+    name: '',
+    activeLink: null,
+    nodes: [
+      {
+        "name": "John",
+        "color": "hsl(34,60%,40%)"
+      },
+      {
+        "name": "Raoul",
+        "color": "hsl(85, 60%, 40%)"
+      },
+      {
+        "name": "Jane",
+        "color": "hsl(35, 60%, 40%)"
+      }
+    ],
+    links: [
+      {source: 0, target: 1, value: 70, color: getRandomColor()},
+      {source: 0, target: 2, value: 70, color: getRandomColor()}
+    ],
+    dialog: {
+      autoFocus: true,
+      canEscapeKeyClose: true,
+      canOutsideClickClose: true,
+      enforceFocus: true,
+      isOpen: false,
+      usePortal: true
+    }
   };
+
+  addNode = () => {
+    const nodes = [...this.state.nodes],
+      links = [...this.state.links];
+
+    nodes.push({
+      name: this.state.name,
+      color: `hsl(${getRandomNumber(360)},60%,40%)`
+    });
+
+    const reverse = getRandomNumber(1) === 0;
+    const source = reverse ? getRandomNumber(nodes.length-2) : nodes.length-1
+    const target = reverse ? nodes.length-1 : getRandomNumber(nodes.length-2)
+
+    links.push({
+      source,
+      target,
+      value: getRandomNumber(35)+10,
+      color: getRandomColor()
+  })
+
+    this.setState({
+      name: '',
+      nodes,
+      links,
+      dialog: {
+        ...this.state.dialog,
+        isOpen: false
+      }
+    })
+  };
+
+  openDialog = () => {
+    this.setState({
+      dialog: {
+        ...this.state.dialog,
+        isOpen: !this.state.dialog.isOpen
+      }
+    })
+  }
+
+  handleChange = (e) => {
+    this.setState({
+      name: e.target.value
+    })
+  }
+
+  _handleKeyPress = (e) => {
+    if (e.key === 'Enter') {
+      this.addNode();
+    }
+  }
 
   render() {
     const {activeLink} = this.state;
 
-    // Note: d3.sankey currently mutates the `nodes` and `links` arrays, which doesn't play nice
-    // with React's single-direction data flow. We create a copy of each before we pass to the sankey
-    // component, just to be sure.
     return (
-      <div style={{ transform: [{ rotate: '90deg'}] }}>
-        <div>
+      <div>
+        <Dialog
+          className={""}
+          icon="info-sign"
+          onClose={this.openDialog}
+          title="Add New Node"
+          {...this.state.dialog}
+        >
+          <div style={{ padding: '30px' }}>
+            <InputGroup
+              leftIcon="name"
+              onKeyPress={this._handleKeyPress}
+              onChange={this.handleChange}
+              placeholder="Node name"
+              autoFocus
+              value={this.state.name}
+            />
+            <Button style={{marginTop: 15}} onClick={ this.addNode }>Add</Button>
+          </div>
+        </Dialog>
+        <div className="padd">
+          <Button
+            icon="add"
+            onClick={this.openDialog}
+          >
+            Add New Node
+          </Button>
+        </div>
+        <div className="padd">
           {`${
             activeLink
-              ? `${newNodes[activeLink.source.index].name} -> ${
-              newNodes[activeLink.target.index].name
+              ? `${this.state.nodes[activeLink.source.index].name} -> ${
+              this.state.nodes[activeLink.target.index].name
               }`
               : 'None'
             } selected`}
         </div>
         <Sankey
-          nodes={newNodes.map(d => ({...d}))}
-          links={links.map((d, i) => ({
+          nodes={this.state.nodes.map(d => ({...d}))}
+          links={this.state.links.map((d, i) => ({
             ...d,
             opacity:
               activeLink && i === activeLink.index

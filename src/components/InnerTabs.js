@@ -2,6 +2,7 @@ import React from 'react';
 import { Tabs } from 'antd';
 
 import SemanticComponents from './semantic';
+import BlueprintComponents from './blueprint';
 import FaceDetection from './chrome/FaceDetection';
 import Sankey from './nivo/Snakey';
 import LiveStream from './file-reader/LiveStream';
@@ -12,6 +13,7 @@ const TabPane = Tabs.TabPane;
 
 const InnerTabs = ({ component }) => {
   const SemanticToRender = SemanticComponents[component];
+  const BlueprintToRender = BlueprintComponents[component];
 
   if (component === 'FaceDetection') {
     return (
@@ -56,7 +58,7 @@ const InnerTabs = ({ component }) => {
   else {
     return (
       <Tabs type="card">
-        <TabPane tab="Blueprint" key="1">Content of Blueprint Library</TabPane>
+        <TabPane tab="Blueprint" key="1"><BlueprintToRender /></TabPane>
         <TabPane tab="Ant Design" key="3">Content of Ant Design Library</TabPane>
         <TabPane tab="Semantic UI" key="4"><SemanticToRender /></TabPane>
       </Tabs>
