@@ -3,18 +3,21 @@ import { Tabs } from 'antd';
 
 import SemanticComponents from './semantic';
 import BlueprintComponents from './blueprint';
+import AntComponents from './ant';
 import FaceDetection from './chrome/FaceDetection';
 import Sankey from './nivo/Snakey';
 import LiveStream from './file-reader/LiveStream';
 import PdfViewer from './file-reader/PdfViewer';
 import DocxViewer from './file-reader/DocxViewer';
 import AudioPlayer from './file-reader/AudioPlayer';
+import NA from './NA';
 
 const TabPane = Tabs.TabPane;
 
 const InnerTabs = ({ component }) => {
-  const SemanticToRender = SemanticComponents[component];
-  const BlueprintToRender = BlueprintComponents[component];
+  const SemanticToRender = SemanticComponents[component] || NA;
+  const BlueprintToRender = BlueprintComponents[component] || NA;
+  const AntToRender = AntComponents[component] || NA;
 
   if (component === 'FaceDetection') {
     return (
@@ -56,7 +59,7 @@ const InnerTabs = ({ component }) => {
     )
   }
 
-  else if (component === 'Sankey') {
+  if (component === 'Sankey') {
     return (
       <Tabs type="card">
         <TabPane tab="Sankey" key="1"><Sankey /></TabPane>
@@ -64,15 +67,13 @@ const InnerTabs = ({ component }) => {
     )
   }
 
-  else {
-    return (
-      <Tabs type="card">
-        <TabPane tab="Blueprint" key="1"><BlueprintToRender /></TabPane>
-        <TabPane tab="Ant Design" key="3">Content of Ant Design Library</TabPane>
-        <TabPane tab="Semantic UI" key="4"><SemanticToRender /></TabPane>
-      </Tabs>
-    )
-  }
+  return (
+    <Tabs type="card">
+      <TabPane tab="Blueprint" key="1"><BlueprintToRender /></TabPane>
+      <TabPane tab="Ant Design" key="3"><AntToRender /></TabPane>
+      <TabPane tab="Semantic UI" key="4"><SemanticToRender /></TabPane>
+    </Tabs>
+  )
 };
 
 export default InnerTabs;

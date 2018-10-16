@@ -6,8 +6,12 @@ import * as serviceWorker from './serviceWorker';
 import 'semantic-ui-css/semantic.min.css';
 import 'antd/dist/antd.css';
 import './style/blueprint.css';
+import './style/table.css';
+import './style/blueprint-select.css';
 import './style/docs-theme.css';
+import './style/docs-app.css';
 import 'react-vis/dist/style.css';
+import 'antd/dist/antd.css';
 import './App.css';
 
 ReactDOM.render(<App />, document.getElementById('root'));
